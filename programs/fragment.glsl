@@ -42,6 +42,7 @@ float fbm(vec2 p) {
 float getTerrain(vec3 p) {
 
     float d = 0;
+    d -= 130.0 * noise(p.xz * 0.002);
     d += 80.0 * noise(p.xz * 0.01) + 80.0;
     d += 20.0 * fbm(p.xz * 0.1) + 20.0;
     d += p.y + 2.0;
@@ -114,8 +115,9 @@ mat3 getCam(vec3 ro, vec3 lookAt) {
 vec3 render(vec2 uv) {
 
     vec3 col = vec3(0);
-    vec3 ro = vec3(0.0, 1.0, -3.0);
-    vec3 lookAt = vec3(0, 0, 0);
+    vec3 ro = vec3(220.0, 50.0, 220.0);
+    ro.xz *= rot(7.0 * 0.1 * sin(u_time * 0.5) + 1.5);
+    vec3 lookAt = vec3(0, 1, 0);
     vec3 rd = getCam(ro, lookAt) * normalize(vec3(uv, 2.0));
 
     float dist = rayMarch(ro, rd);
