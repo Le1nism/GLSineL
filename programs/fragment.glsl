@@ -64,7 +64,7 @@ float map(vec3 p) {
     float d = 0.0;
     d += getTerrain(p);
 
-    return min(d, getWater(p));
+    return min(d, getWater(p) + d);
 }
 
 float rayMarch(vec3 ro, vec3 rd) {
