@@ -51,12 +51,20 @@ float getTerrain(vec3 p) {
     return d * 0.1;
 }
 
+float getWater(vec3 p) {
+
+    float d = p.y + 5.0 * sin(u_time) + 80.0;
+    d += 6.0 * noise(p.xz * 0.02 + 1.0 + u_time);
+
+    return d;
+}
+
 float map(vec3 p) {
 
     float d = 0.0;
     d += getTerrain(p);
 
-    return d;
+    return min(d, getWater(p));
 }
 
 float rayMarch(vec3 ro, vec3 rd) {
