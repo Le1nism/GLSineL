@@ -44,7 +44,7 @@ float getTerrain(vec3 p) {
     float d = 0;
     d -= 130.0 * noise(p.xz * 0.002);
     d += 80.0 * noise(p.xz * 0.01) + 80.0;
-    d += 20.0 * fbm(p.xz * 0.1) + 20.0;
+    d += 20.0 * fbm(p.xz * 0.1) * noise(p.xz * 0.01) + 20.0;
     d -= 2.0 * sin(0.6 * d);
     d += p.y + 2.0;
 
