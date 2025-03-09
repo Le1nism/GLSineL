@@ -9,19 +9,44 @@ const float EPSILON = 0.001;
 const float MAX_DIST = 1000.0;
 const float STEPS = 300.0;
 const float PI = acos(-1.0);
+const int NUM_OCTAVES = 4;
 
 float noise(vec2 p) {
 
-    return sin(p[0]) + sin(p[1]);
+    return sin(p.x) + sin(p.y);
+}
+
+mat2 rot(float a) {
+
+    float sa = sin(a);
+    float ca = cos(a);
+
+    return mat2(ca, -sa, sa, ca);
+}
+
+float fbm(vec2 p) {
+
+    float res = 0.0;
+    float amp = 0.5;
+    float freq = 1.95;
+    for (int i = 0; i < NUM_OCTAVES; i++) {
+
+        res += amp * noise(p);
+        amp *= 0.5;
+        p = p * freq * rot(PI / 4.0) - res * 0.4;
+    }
+
+    return res;
 }
 
 float getTerrain(vec3 p) {
 
     float d = 0;
-    d += noise(p.xz);
+    d += 80.0 * noise(p.xz * 0.01) + 80.0;
+    d += 20.0 * fbm(p.xz * 0.1) + 20.0;
     d += p.y + 2.0;
 
-    return d;
+    return d * 0.1;
 }
 
 float map(vec3 p) {
